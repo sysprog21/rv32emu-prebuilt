@@ -5,8 +5,9 @@ OPT_LEVEL := 0 1 2
 CFLAGS := -std=c99
 LDFLAGS := -lsemihost -lm
 
-SRC_DIR := src
-BUILD_DIR := build
+CURDIR := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
+SRC_DIR := $(CURDIR)/src
+BUILD_DIR := $(CURDIR)/build
 
 SRCS := \
   captcha.c \
@@ -43,31 +44,34 @@ ifneq ($(filter $(OPT_LEVEL), 2),)
 all: build-O2
 endif
 
+all:
+	$(Q)$(MAKE) -C src/asm-hello BUILD_DIR="$(BUILD_DIR)" RV32_EXT=$(RV32_EXT) OPT_LEVEL="$(OPT_LEVEL)" all
+
 include mk/common.mk
 include mk/toolchain.mk
 
 build-O0: $(addprefix $(BUILD_DIR)/$(RV32_EXT)/O0/,$(EXECUTABLES))
 
 $(BUILD_DIR)/$(RV32_EXT)/O0/%.elf: $(SRC_DIR)/%.c | build-toolchain
-	$(VECHO) "  RISCVCC\t$@\n"
+	$(VECHO) "  RISCVCC\t$(patsubst $(abspath $(SRC_DIR)/..)/%,%,$@)\n"
 	$(Q)$(CROSS_COMPILE) -o $@ -O0 $(CFLAGS) $< $(LDFLAGS)
 
 build-O1: $(addprefix $(BUILD_DIR)/$(RV32_EXT)/O1/,$(EXECUTABLES))
 
 $(BUILD_DIR)/$(RV32_EXT)/O1/%.elf: $(SRC_DIR)/%.c | build-toolchain
-	$(VECHO) "  RISCVCC\t$@\n"
+	$(VECHO) "  RISCVCC\t$(patsubst $(abspath $(SRC_DIR)/..)/%,%,$@)\n"
 	$(Q)$(CROSS_COMPILE) -o $@ -O1 $(CFLAGS) $< $(LDFLAGS)
 
 build-O2: $(addprefix $(BUILD_DIR)/$(RV32_EXT)/O2/,$(EXECUTABLES))
 
 $(BUILD_DIR)/$(RV32_EXT)/O2/%.elf: $(SRC_DIR)/%.c | build-toolchain
-	$(VECHO) "  RISCVCC\t$@\n"
+	$(VECHO) "  RISCVCC\t$(patsubst $(abspath $(SRC_DIR)/..)/%,%,$@)\n"
 	$(Q)$(CROSS_COMPILE) -o $@ -O2 $(CFLAGS) $< $(LDFLAGS)
 
 clean:
-	$(RM) -r $(BUILD_DIR)/$(RV32_EXT)/*
+	$(RM) -r $(foreach LEVEL,$(OPT_LEVEL),$(BUILD_DIR)/$(RV32_EXT)/O$(LEVEL)/*)
 
 distclean: clean
 	$(RM) -r $(BUILD_DIR)/*
 	$(RM) -r $(RISCV_TOOLCHAIN_DIR)/build/*
-	$(MAKE) -C $(RISCV_TOOLCHAIN_DIR) distclean
+	$(Q)$(MAKE) -C $(RISCV_TOOLCHAIN_DIR) distclean

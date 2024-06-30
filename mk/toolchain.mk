@@ -1,6 +1,7 @@
 RV32_PREFIX := riscv32-unknown-elf-
 
-RISCV_TOOLCHAIN_DIR := riscv-gnu-toolchain
+CURDIR := $(abspath $(dir $(lastword $(MAKEFILE_LIST)))/..)
+RISCV_TOOLCHAIN_DIR := $(CURDIR)/riscv-gnu-toolchain
 SHELL_HACK := $(shell mkdir -p $(RISCV_TOOLCHAIN_DIR)/build/$(RV32_EXT))
 
 CROSS_COMPILE := $(shell find $(RISCV_TOOLCHAIN_DIR)/build/$(RV32_EXT) -name $(RV32_PREFIX)gcc)
@@ -11,7 +12,7 @@ build-toolchain:
   ifeq ($(CROSS_COMPILE),)
 	git submodule update --init $(RISCV_TOOLCHAIN_DIR)
 	cd $(RISCV_TOOLCHAIN_DIR) && ./configure \
-      --prefix=$(shell pwd)/$(RISCV_TOOLCHAIN_DIR)/build/$(RV32_EXT) \
+      --prefix=$(RISCV_TOOLCHAIN_DIR)/build/$(RV32_EXT) \
       --with-arch=$(RV32_EXT) \
       --with-abi=ilp32 \
       --disable-gdb

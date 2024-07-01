@@ -7,7 +7,7 @@ SRC_DIR := $(CURDIR)/src
 CFLAGS := -c -std=c99 -I$(CURDIR)/include
 LDFLAGS := -lm
 
-# prevent lazy set if not providing initial value
+# prevent lazy set
 ifeq ($(BUILD_DIR),)
   BUILD_DIR := $(CURDIR)/build
 endif

@@ -1,6 +1,7 @@
 # TODO: check unsupported extensions
-RV32_EXT ?= rv32i
-OPT_LEVEL := 0 1 2
+
+RV32_EXT ?= rv32gc
+OPT_LEVEL ?= 0 1 2
 
 CFLAGS := -std=c99
 LDFLAGS := -lsemihost -lm

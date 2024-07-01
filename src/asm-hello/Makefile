@@ -1,4 +1,4 @@
-RV32_EXT ?= rv32i
+RV32_EXT ?= rv32gc
 OPT_LEVEL ?= 0 1 2
 
 ASFLAGS := -march=$(RV32_EXT) -mabi=ilp32
@@ -7,7 +7,7 @@ LDFLAGS := --oformat=elf32-littleriscv
 CURDIR := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
 SRC_DIR := $(CURDIR)
 
-# prevent lazy set if not providing initial value
+# prevent lazy set
 ifeq ($(BUILD_DIR),)
   BUILD_DIR := $(CURDIR)/build
 endif

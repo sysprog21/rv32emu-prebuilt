@@ -20,11 +20,6 @@ Inspired by
   * [Compiler Construction](https://people.inf.ethz.ch/wirth/CompilerConstruction/index.html) -
     brief but comprehensive book by Niklaus Wirth.
 
-Run the following command under top-level directory.
-```shell
-tests/cc-selfhost.sh
-```
-
 ## Language restrictions
 
   * No linker.

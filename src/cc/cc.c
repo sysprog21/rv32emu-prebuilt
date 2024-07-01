@@ -44,6 +44,8 @@
  *   0Ah %                   7Dh }
  */
 
+#include "emit.c"
+
 /* Helper */
 
 /* helper to write a 32 bit number to a char array */

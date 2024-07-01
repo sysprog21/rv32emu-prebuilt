@@ -16,6 +16,8 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
+#include "stdlib.c"
+
 /* constants */
 unsigned buf_size;
 

@@ -47,6 +47,7 @@ endif
 
 all:
 	$(Q)$(MAKE) -C src/asm-hello BUILD_DIR="$(BUILD_DIR)" RV32_EXT=$(RV32_EXT) OPT_LEVEL="$(OPT_LEVEL)" all
+	$(Q)$(MAKE) -C src/cc BUILD_DIR="$(BUILD_DIR)" RV32_EXT=$(RV32_EXT) OPT_LEVEL="$(OPT_LEVEL)" all
 	$(Q)$(MAKE) -C src/ansibench/nbench BUILD_DIR="$(BUILD_DIR)" RV32_EXT=$(RV32_EXT) OPT_LEVEL="$(OPT_LEVEL)" all
 
 include mk/common.mk

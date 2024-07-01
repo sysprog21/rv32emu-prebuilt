@@ -49,6 +49,7 @@ all:
 	$(Q)$(MAKE) -C src/asm-hello BUILD_DIR="$(BUILD_DIR)" RV32_EXT=$(RV32_EXT) OPT_LEVEL="$(OPT_LEVEL)" all
 	$(Q)$(MAKE) -C src/cc BUILD_DIR="$(BUILD_DIR)" RV32_EXT=$(RV32_EXT) OPT_LEVEL="$(OPT_LEVEL)" all
 	$(Q)$(MAKE) -C src/ansibench/nbench BUILD_DIR="$(BUILD_DIR)" RV32_EXT=$(RV32_EXT) OPT_LEVEL="$(OPT_LEVEL)" all
+	$(Q)$(MAKE) -C src/rv8-bench BUILD_DIR="$(BUILD_DIR)" RV32_EXT=$(RV32_EXT) OPT_LEVEL="$(OPT_LEVEL)" all
 
 include mk/common.mk
 include mk/toolchain.mk
@@ -56,19 +57,19 @@ include mk/toolchain.mk
 build-O0: $(addprefix $(BUILD_DIR)/$(RV32_EXT)/O0/,$(EXECUTABLES))
 
 $(BUILD_DIR)/$(RV32_EXT)/O0/%.elf: $(SRC_DIR)/%.c | build-toolchain
-	$(VECHO) "  RISCVCC\t$(patsubst $(abspath $(SRC_DIR)/..)/%,%,$@)\n"
+	$(VECHO) "  RISCVCC\t$(patsubst $(abspath $(BUILD_DIR)/..)/%,%,$@)\n"
 	$(Q)$(CROSS_COMPILE) -o $@ -O0 $(CFLAGS) $< $(LDFLAGS)
 
 build-O1: $(addprefix $(BUILD_DIR)/$(RV32_EXT)/O1/,$(EXECUTABLES))
 
 $(BUILD_DIR)/$(RV32_EXT)/O1/%.elf: $(SRC_DIR)/%.c | build-toolchain
-	$(VECHO) "  RISCVCC\t$(patsubst $(abspath $(SRC_DIR)/..)/%,%,$@)\n"
+	$(VECHO) "  RISCVCC\t$(patsubst $(abspath $(BUILD_DIR)/..)/%,%,$@)\n"
 	$(Q)$(CROSS_COMPILE) -o $@ -O1 $(CFLAGS) $< $(LDFLAGS)
 
 build-O2: $(addprefix $(BUILD_DIR)/$(RV32_EXT)/O2/,$(EXECUTABLES))
 
 $(BUILD_DIR)/$(RV32_EXT)/O2/%.elf: $(SRC_DIR)/%.c | build-toolchain
-	$(VECHO) "  RISCVCC\t$(patsubst $(abspath $(SRC_DIR)/..)/%,%,$@)\n"
+	$(VECHO) "  RISCVCC\t$(patsubst $(abspath $(BUILD_DIR)/..)/%,%,$@)\n"
 	$(Q)$(CROSS_COMPILE) -o $@ -O2 $(CFLAGS) $< $(LDFLAGS)
 
 clean:

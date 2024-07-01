@@ -18,3 +18,6 @@ build-toolchain:
       --disable-gdb
 	$(MAKE) -C $(RISCV_TOOLCHAIN_DIR) clean all
   endif
+
+CROSS_COMPILE := $(shell find $(RISCV_TOOLCHAIN_DIR)/build/$(RV32_EXT) -name $(RV32_PREFIX)gcc)
+RV32_PREFIX := $(patsubst %gcc,%,$(CROSS_COMPILE))

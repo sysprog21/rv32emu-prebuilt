@@ -20,7 +20,8 @@ SRCS := \
   puzzle.c \
   qrcode.c \
   richards.c \
-  spirograph.c
+  spirograph.c \
+  dhrystone.c
 
 ifneq ($(findstring f,$(RV32_EXT)),)
   SRCS += \

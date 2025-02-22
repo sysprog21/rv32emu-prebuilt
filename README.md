@@ -2,4 +2,4 @@
 
 - testbenches (x86-softfp / aarch64)
 - [RISC-V Sail model](https://github.com/riscv/sail-riscv)
-- Linux Kerenl image
+- Linux kernel image

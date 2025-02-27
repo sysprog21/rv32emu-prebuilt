@@ -12,6 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Trigger wasm deploy event
+        if: contains(github.event.release.tag_name, 'ELF')
         run: |
           curl -X POST \
             -H "Accept: application/vnd.github+json" \

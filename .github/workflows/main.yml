@@ -2,6 +2,15 @@ name: Trigger wasm deploy event in rv32emu upon releasing
 
 on:
   workflow_dispatch:
+    inputs:
+      target:
+        description: 'Which deploy event to trigger?'
+        required: true
+        default: 'deploy_user_wasm'
+        type: choice
+        options:
+          - deploy_user_wasm
+          - deploy_system_wasm
   release:
     types:
       - published
@@ -11,11 +20,32 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
-      - name: Trigger wasm deploy event
-        if: contains(github.event.release.tag_name, 'ELF')
+
+      # Auto-trigger based on release tag
+      - name: Trigger user wasm deploy event (from release tag)
+        if: github.event_name == 'release' && contains(github.event.release.tag_name, 'ELF')
         run: |
           curl -X POST \
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer ${{ secrets.RV32EMU_WORKFLOW_TOKEN }}" \
             https://api.github.com/repos/sysprog21/rv32emu/dispatches \
-            -d '{"event_type": "deploy_wasm"}'
+            -d '{"event_type": "deploy_user_wasm"}'
+
+      - name: Trigger system wasm deploy event (from release tag)
+        if: github.event_name == 'release' && contains(github.event.release.tag_name, 'Linux')
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.RV32EMU_WORKFLOW_TOKEN }}" \
+            https://api.github.com/repos/sysprog21/rv32emu/dispatches \
+            -d '{"event_type": "deploy_system_wasm"}'
+
+      # Manual trigger via button
+      - name: Trigger deploy event (manual)
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.RV32EMU_WORKFLOW_TOKEN }}" \
+            https://api.github.com/repos/sysprog21/rv32emu/dispatches \
+            -d '{"event_type": "${{ github.event.inputs.target }}"}'
